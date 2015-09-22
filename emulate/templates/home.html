@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+	<title> AuthorEmulator</title>
+	<!-- later you will use: <link rel="stylesheet" type="text/css" hrf="cssname.css"/> -->
+	
+	<!--scrollbars-->
+		<!-- styles needed by jScrollPane -->
+		<link type="text/css" href="jScrollPane/style/jquery.jscrollpane.css" rel="stylesheet" media="all" />
+		
+		<!-- latest jQuery direct from google's CDN -->
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+
+		<!--jScrollPane-->
+		<script type="text/javascript" src="/static/jScrollPane/script/jquery.jscrollpane.min.js"></script>
+		<script type="text/javascript" id="sourcecode">
+			$(function()
+			{
+				$('.scroll-pane').jScrollPane();
+				$('.scroll-pane-arrows').jScrollPane(
+					{
+						showArrows: true,
+						horizontalGutter: 10
+					}
+				);
+			});
+		</script>
+		<!-- the mousewheel plugin - optional to provide mousewheel support -->
+		<script type="text/javascript" src="/static/jScrollPane/script/jquery.mousewheel.js"></script>
+
+	<!--flot-->
+		<script language="javascript" type="text/javascript" src="/static/javascript/flot/jquery.flot.js"></script>
+		<!--[if IE]><script language="javascript" type="text/javascript" src="/static/javascript/flot/excanvas.js"></script><![endif]-->
+		<script language="javascript" type="text/javascript" src="/static/javascript/flot/jquery.flot.fillbetween.js"></script>
+	<!-- Reset -->
+	<!--
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.9.0/build/reset/reset-min.css">
+	-->
+
+	<style type="text/css">
+		
+		* 
+			{margin-top: 0px;
+			margin-bottom: 0px; 
+			padding-top: 0px;
+			padding-bottom: 0px;}
+			
+		html
+			{background:#000;
+			margin-top: 20px;}
+		
+		body
+			{font-family:Georgia;
+			width:800px;
+			height:680px;
+			margin-right:auto;
+			margin-left:auto;
+			background-image:url(/static/images/Papers5.png); /* get smaller background*/
+			background-size:800px;
+			background-repeat:no-repeat;
+			background-color:black;}
+		h1 
+			{width:700px;
+			font-size:60px;
+			text-indent: 180px;}
+			/*border-bottom-style:double;
+			border-bottom-color:black;*/
+		h2
+			{width:700px;
+			padding-left: 320px;}
+		h3 
+			{line-height:90%;}
+		p 
+			{text-align: justify;
+			font-size: 13px;
+			line-height:130%;}
+		img
+			{display: block;}
+		input
+			{vertical-align: middle;
+			text-align:center;}
+		.marginindent
+			{margin-left: 40px;}
+		th
+			{text-align:center;
+			font-size: 12px;}
+		td
+			{vertical-align:top;
+			text-align:center;}
+		a:link
+			{color:black;
+			text-decoration: underline;} /*border-bottom:1px dotted;*/
+		a:visited
+			{}
+		a:hover
+			{color:white;}
+		a:active
+			{text-decoration: none; 
+			border-top:1px dotted;
+			border-left:1px dotted;
+			border-right:1px dotted;
+			border-bottom:1px dotted;}
+		.fillin
+			{background-color: transparent;}
+		#top
+			{position:relative;
+			top: 0px;
+			left: 0px;}
+		#top a:link
+			{font-size:15px;}
+		#bottom
+			{position:relative;
+			top: 0px;
+			left: 0px;
+			text-indent: 791px;
+			width:1000px;
+			border-top-style:solid;
+			border-top-color:black;
+			border-top-width:1px;}
+		#bottom a:link
+			{font-size:14px;}
+		/* Styles specific to this particular page */
+		.scroll-pane,
+		.scroll-pane-arrows
+			{width: 160px;
+			height: 530px;
+			overflow: auto;}
+	</style>
+	
+	<title>Area Chart</title>
+    <link type="text/css" rel="stylesheet" href="ex.css?3.2"/>
+    <style type="text/css">
+		#fig {
+		  width: 430px;
+		  height: 225px;
+		}
+    </style>
+	
+</head>
+<body>	
+			
+	<!--<h1> Insert text  </h1> -->
+	<img style="margin-left: 180px; padding-top: 10px; padding-bottom: 5px;" src="/static/images/ProbableCauseTitle.png"> 
+	<img src="/static/images/pixeltriple2a.gif" class="marginindent" height="4" width="750"> 
+	<!--<form style="padding-left: 260px;"> 
+		<input style="font-family:Georgia; font-size: 20px;" class="fillin" type="text" name="username" size="30" maxlength="100" value="Ask a Question:"/> 
+		<input type="image" src="/static/images/buttongear.png" alt="Submit Form"> 
+	</form> -->
+	<form style="padding-left: 260px;" action="/search/" method="get">
+	<label for="id_q">Search:</label>
+           <input id="id_q" name="q" type="text">
+           <input type="submit" value="Submit">
+	You searched for "{{ query_string }}" and the results are listed below.
+           <li> {{ found_entries }}</li>
+	Cheers and enjoy!</form>
+	<img src="/static/images/pixelsingle.gif" class="marginindent" height="1" width="750"> 
+	
