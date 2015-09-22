@@ -171,9 +171,14 @@ generateText should print a string of n words"""
         string=string+' '+choice
     return string
 
-
-d = createDictionary( 'shakespeare.txt' )
-poem = generateText( d, 24)
+from django.template import RequestContext, loader
 
 def index(request):
-    return HttpResponse(poem)
+    d = createDictionary( 'shakespeare.txt' )
+    poem = generateText( d, 50)
+
+    template = loader.get_template('emulate/home.html')
+    context = RequestContext(request, {
+        'poem': poem, #I need to access poem in there! will this do it?
+    })
+    return HttpResponse(template.render(context)) 
