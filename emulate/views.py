@@ -148,6 +148,51 @@ def createDictionary( filename=None ):
         return  # avoids returning too large a dictionary
     """
 
+def createDictionaryFromString( text ):
+    """ creates and returns a dictionary of distinct words """
+    list_of_words = text.split()  # split splits a string
+    num_words = len( list_of_words )
+    D = {}  # an empty dictionary
+    """
+    for w in range(len(list_of_words)):
+        
+        for punc in ".,`'\"~!@#$%^&*();:<>|\\/?}{][_+=":
+            list_of_words[w] = list_of_words[w].replace( punc, '' )
+            list_of_words[w] = list_of_words[w].lower() # lower-case
+    """
+	
+    D['$']=[list_of_words[0]]
+    for w in range(len(list_of_words)-1):
+        if (punk(list_of_words[w]) in D) == False:  # w was not there!
+            D[punk(list_of_words[w])] = [list_of_words[w+1]]
+            
+        else: # d.has_key( w ) == True,  so w IS already there!
+            D[punk(list_of_words[w])] += [list_of_words[w+1]]
+
+                #THIS IS WHEN YOU FIND THE END OF SENTENCES---ANYTHING WITH A punctuation in the word
+
+    num_distinct_words = len( D )
+
+    RevItems = [ x[::-1] for x in D.items() ]
+    RevItems.sort()
+    RevItems = RevItems[::-1]
+    counter = 40
+    return D
+
+    """
+    for item in RevItems:
+        if counter < 1: break
+        counter -= 1
+        print item[1], "\t\t-->", item[0], "times"
+    """
+    """
+    if len(D) < 20:
+        return D
+    else:
+        return  # avoids returning too large a dictionary
+    """
+
+	
 def punk(mystring):
     """takes a string input, then outputs '$' if there is a '?','.', or
 '!' in the string and outputs the origional string if not. """
@@ -173,12 +218,66 @@ generateText should print a string of n words"""
 
 from django.template import RequestContext, loader
 
+"""
 def index(request):
-    d = createDictionary( 'shakespeare.txt' )
-    poem = generateText( d, 50)
+    errors = []
+    if 'q' in request.GET:
+        q = request.GET['q']
+        if not q:
+            errors.append('Enter a search term.')
+        else:
+            predictions = Prediction.objects.filter(name__icontains=q)
+            return render_to_response('prediction/search_results.html',
+                {'predictions': predictions, 'query': q})
+    return render_to_response('prediction/search_results.html',{'errors': errors})
+"""
 
+def index(request):
+	#take in the entry
+	#if ('q' in request.GET) and request.GET['q'].strip():
+    #    q = request.GET['q']
+    #    q.string()
+    if 'q' in request.GET and len(request.GET['q'].split())!=0:
+        q = request.GET['q']
+        if len(q.split())>50:
+            poem = generateText( createDictionaryFromString( q ), 50)
+        else:
+            poem = generateText( createDictionaryFromString( q ), len(q.split())-1)
+            poem =  poem + " (If there aren't any repeating words in your text, the only possible emulation IS the the text you entered. Might we suggest adding a PILE of text instead of testing us?)"
+    else: #this is just to make sure any input works
+        poem = "Insert Text above!"
+        q= ""
+	#process a poem
+	#d = createDictionary( 'shakespeare.txt' ) #(later change shakespeare to their entry above!)
+    #poem = generateText( d, 50)
+    #poem = generateText( createDictionary( 'shakespeare.txt' ), 50)
     template = loader.get_template('emulate/home.html')
     context = RequestContext(request, {
         'poem': poem, #I need to access poem in there! will this do it?
+		'q': q, 
     })
     return HttpResponse(template.render(context)) 
+	
+"""
+def index(request):
+	#take in the entry
+    query_string = ''
+    found_entries = None
+    if ('q' in request.GET) and request.GET['q'].strip():
+        query_string = request.GET['q']
+        entry_query = get_query(query_string, ['title', 'body',])        
+        found_entries = Entry.objects.filter(entry_query).order_by('-pub_date')
+
+	#process a poem
+	#d = createDictionary( 'shakespeare.txt' ) #(later change shakespeare to their entry above!)
+    #poem = generateText( d, 50)
+    poem = generateText( createDictionary( 'shakespeare.txt' ), 50)
+	
+    template = loader.get_template('emulate/home.html')
+    context = RequestContext(request, {
+        'poem': poem, #I need to access poem in there! will this do it?
+		'query_string': query_string, 
+		'found_entries': found_entries,
+    })
+    return HttpResponse(template.render(context)) 
+"""
